@@ -3,6 +3,10 @@
 Aplikasi mobile kontrol dan monitoring jarak jauh (*remote control*) berbasis **Flutter & Dart** untuk sistem pendingin dan evakuasi asap industri:
 **ESP32 + Sensor DHT22 + Sensor Kualitas Udara & Asap MQ-135 + MOSFET PWM + Alarm Buzzer + Smart RGB LED**.
 
+## Skematik Rangkaian Simulasi Wokwi (ESP32 + DHT22 + MQ-135 + Relay)
+
+![Skematik Rangkaian Wokwi ESP32](docs/skematik_wokwi_esp32.png)
+
 ---
 
 ## ✨ Fitur Utama Aplikasi

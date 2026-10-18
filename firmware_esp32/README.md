@@ -10,7 +10,9 @@ Sistem pendingin cerdas dan evakuasi asap otomatis berbasis **ESP32** menggunaka
 
 ---
 
-## 📌 Skema Perkabelan (Wiring Diagram)
+## 📌 Skema Perkabelan & Rangkaian Wokwi (Wiring Diagram)
+
+![Skema Rangkaian Wokwi](skematik_wokwi_esp32.png)
 
 | Komponen | Pin Komponen | Pin ESP32 | Keterangan |
 | :--- | :--- | :--- | :--- |
