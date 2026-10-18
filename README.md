@@ -27,21 +27,47 @@ Aplikasi mobile kontrol dan monitoring jarak jauh (*remote control*) berbasis **
    - **HTTP Bridge Lokal:** Polling via script `mqtt_bridge.js` di laptop (`:9080`).
    - **Mode Demo Interaktif:** Simulasi slider suhu, kelembapan, dan asap langsung di aplikasi tanpa hardware.
 
+## 🔌 Panduan Cara Menyambungkan Aplikasi dengan ESP32
+
+Aplikasi ini dirancang dengan arsitektur multi-jalur (*hybrid connectivity*) yang fleksibel sesuai kondisi lapangan:
+
+### 1. Jaringan Lokal / WiFi yang Sama (Direct Local IP / HTTP)
+* **Kondisi:** Smartphone/Laptop berada di satu jaringan WiFi atau Hotspot yang sama dengan ESP32.
+* **Cara Kerja:**
+  - ESP32 mendapatkan IP lokal (misalnya `192.168.1.50` atau IP lokal Wokwi).
+  - Masukkan IP address ESP32 tersebut ke dalam menu pengaturan koneksi di aplikasi.
+  - Aplikasi langsung berkomunikasi melalui protokol HTTP port 80 untuk membaca sensor dan mengirim perintah kontrol secara instan tanpa latensi internet.
+
+### 2. Koneksi Nirkabel Langsung (Bluetooth / BLE)
+* **Kondisi:** Digunakan saat berada di dekat alat tanpa tersambung ke jaringan router WiFi.
+* **Cara Kerja:**
+  - Aktifkan Bluetooth pada HP dan nyalakan perangkat ESP32.
+  - Pilih perangkat ESP32 dari daftar pemindaian Bluetooth aplikasi untuk pairing langsung.
+  - Pengguna dapat memantau indikator sensor dan menyalakan/mematikan kipas tanpa ketergantungan sinyal internet maupun access point eksternal.
+
+### 3. Jarak Jauh Tanpa Batas via Cloud Broker MQTT (Remote Anywhere)
+* **Kondisi:** Pengguna bepergian ke mana saja, di luar rumah/pabrik, atau menggunakan paket data seluler (4G/5G).
+* **Cara Kerja:**
+  - ESP32 terhubung ke internet dan secara otomatis mempublikasikan data sensor (`DHT22` & `MQ-135`) ke Cloud Broker (`broker.emqx.io`) pada topik `hami_cooling/data`.
+  - Aplikasi mobile di HP Anda otomatis mengaktifkan fitur **Cloud Fallback / MQTT Subscriber**.
+  - **Hasilnya:** Anda tetap bisa memonitor suhu, mendeteksi asap, dan mengontrol relay kipas dari belahan dunia mana pun secara *realtime* tanpa perlu pengaturan Port Forwarding atau IP Publik statis.
+
 ---
 
 ## 🚀 Cara Menjalankan & Menghubungkan
 
 ### Skenario A: Uji Coba dengan Simulator Wokwi
-1. Buka dan jalankan simulasi Wokwi di folder:
-   `smartCooling by dht22 and mq135/diagram.json`
+1. Buka folder `firmware_esp32/` dan jalankan simulasi Wokwi (`diagram.json`).
 2. Jalankan aplikasi Flutter:
    ```bash
    cd mobile
    flutter run
    ```
-3. Di tab **MQTT Cloud**, broker default adalah `broker.emqx.io` dengan topik `hami_cooling/data`. Status akan langsung **Terhubung** saat Wokwi mempublikasikan data.
+3. Broker default `broker.emqx.io` dengan topik `hami_cooling/data` akan langsung saling terhubung secara otomatis.
 
 ### Skenario B: Hardware ESP32 Fisik
-1. Hubungkan ESP32 ke WiFi yang memiliki akses internet.
-2. Aplikasi mobile di HP Android akan langsung menerima update data sensor secara realtime dari broker EMQX.
+1. Upload file `firmware_esp32/sketch.ino` ke modul ESP32 Anda.
+2. Masukkan SSID dan Password WiFi tempat alat diletakkan.
+3. Buka aplikasi di smartphone, dan sistem siap digunakan baik dalam jaringan lokal maupun jarak jauh.
+
 
